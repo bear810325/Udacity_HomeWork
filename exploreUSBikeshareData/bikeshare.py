@@ -10,14 +10,14 @@ CITIES_STR = ', '.join(CITIES)
 WAYS_FOR_FILTER = ['month', 'day', 'all']
 WAYS_STR = ', '.join(WAYS_FOR_FILTER)
 
-MONTHS = ['January', 'February', 'March', 'April', 'May', 'June']
+MONTHS = ['january', 'february', 'march', 'april', 'may', 'june']
 MONTHS_STR = ', '.join(MONTHS)
 
-DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
+DAYS = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
 DAYS_STR = ', '.join(DAYS)
 
-MONTH_TO_NUMBER = {'January': 1, 'February': 2, 'March': 3, 'April': 4, 'May': 5, 'June': 6}
-NUMBER_TO_MONTH = {1: 'January', 2: 'February', 3: 'March', 4: 'April', 5: 'May', 6: 'June'}
+MONTH_TO_NUMBER = {'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6}
+NUMBER_TO_MONTH = {1: 'january', 2: 'february', 3: 'march', 4: 'april', 5: 'may', 6: 'june'}
 
 
 def get_filters():
@@ -36,6 +36,7 @@ def get_filters():
     while True:
         try:
             city = input('Would you like to see data for "{}"? --- Please input : \n'.format(CITIES_STR))
+            city = city.lower()
             if city not in CITIES:
                 print(invalid_msg.format(CITIES_STR))
                 continue
@@ -49,6 +50,7 @@ def get_filters():
     while True:
         try:
             way_of_filter = input('Would you like to filter the data by "{}"? --- Please input : \n'.format(WAYS_STR))
+            way_of_filter = way_of_filter.lower()
             if way_of_filter not in WAYS_FOR_FILTER:
                 print(invalid_msg.format(WAYS_STR))
                 continue
@@ -62,6 +64,7 @@ def get_filters():
         while True:
             try:
                 month = input('Which month - "{}"? --- Please input : \n'.format(MONTHS_STR))
+                month = month.lower()
                 if month not in MONTHS:
                     print(invalid_msg.format(MONTHS_STR))
                     continue
@@ -74,6 +77,7 @@ def get_filters():
         while True:
             try:
                 day = input('Which day - "{}" --- Please input : \n'.format(DAYS_STR))
+                day = day.lower()
                 if day not in DAYS:
                     print(invalid_msg.format(DAYS_STR))
                     continue
@@ -134,6 +138,7 @@ def time_stats(df):
     most_often_hour = df['hour'].mode()[0]
     print('the most common start hour is : {}'.format(most_often_hour))
 
+    display_data(df)
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
 
@@ -158,6 +163,7 @@ def station_stats(df):
     print('the most frequent combination of start station and end station trip is fron "{0}" to "{1}"'.format(
         *most_frequent_combin_station))
 
+    display_data(df)
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
 
@@ -174,6 +180,7 @@ def trip_duration_stats(df):
     # Display mean travel time
     print('total travel time is : {} seconds'.format(df['Trip Duration'].mean()))
 
+    display_data(df)
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
 
@@ -194,8 +201,21 @@ def user_stats(df):
     print('most recent year of birth is : {}'.format(int(df['Birth Year'].max())))
     print('most common year of birth is : {}'.format(int(df['Birth Year'].value_counts().idxmax())))
 
+    display_data(df)
     print("\nThis took %s seconds." % (time.time() - start_time))
     print('-' * 40)
+
+
+def display_data(df):
+    see_raw_data = input('\nDo you want to see raw data? Enter yes or no.\n')
+    n = 0
+    while True:
+        if see_raw_data.lower() != 'yes':
+            break
+        else:
+            print(df.iloc[n: n + 5])
+            n = n + 5
+            see_raw_data = input('\nDo you want to see more 5 lines of raw data? Enter yes or no.\n')
 
 
 def main():
