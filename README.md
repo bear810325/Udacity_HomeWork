@@ -1,1 +1,1 @@
-# This is my udacity data analyst course analysis
+# This is my udacity data analyst course notes.
